@@ -87,6 +87,10 @@ while True:
         vehicle = "car"
         print("No valid vehicle profile was entered. Using the car profile.")
 
+    unit_choice = input("Choose distance unit [m]iles or [k]ilometers (default miles): ").strip().lower()
+    unit_name = "kilometers" if unit_choice in ("k", "kilometers") else "miles"
+    multiplier = 1.60934 if unit_name == "kilometers" else 1.0
+
     loc1 = input("Starting Location: ")
 
     if loc1 == "quit" or loc1 == "q":
@@ -141,15 +145,14 @@ while True:
 
         if paths_status == 200:
             miles = paths_data["paths"][0]["distance"] / 1000 / 1.61
-            km = paths_data["paths"][0]["distance"] / 1000
 
             sec = int(paths_data["paths"][0]["time"] / 1000 % 60)
             min = int(paths_data["paths"][0]["time"] / 1000 / 60 % 60)
             hr = int(paths_data["paths"][0]["time"] / 1000 / 60 / 60)
 
             print(
-                "Distance Traveled: {0:.1f} miles / {1:.1f} km".format(
-                    miles, km
+                "Distance Traveled: {0:.1f} {1}".format(
+                    miles * multiplier, unit_name
                 )
             )
 
@@ -168,10 +171,10 @@ while True:
                 distance = paths_data["paths"][0]["instructions"][each]["distance"]
 
                 print(
-                    "{0} ( {1:.1f} km / {2:.1f} miles )".format(
+                    "{0} ( {1:.1f} {2} )".format(
                         path,
-                        distance / 1000,
-                        distance / 1000 / 1.61
+                        (distance / 1000 / 1.61) * multiplier,
+                        unit_name
                     )
                 )
 
@@ -180,6 +183,3 @@ while True:
         else:
             print("Error message: " + paths_data["message"])
             print("*************************************************")
-
-
-            
