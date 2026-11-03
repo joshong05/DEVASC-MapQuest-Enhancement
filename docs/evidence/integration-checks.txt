@@ -1,0 +1,127 @@
+Integrated verification: 4 November 2026 (Asia/Singapore)
+Tester: Codex assistant; not a member-authored report
+Code commit: 4c7c3b1c3e308c7ff69895fd405ea170351418ea
+mapquest.py Git blob: 013a99172082796718e36e3001ee25739f20b69d
+Environment: Windows, Python 3.14.10
+
+Command: python -m unittest discover -s tests -v
+
+test_blank_locations_reprompt (test_mapquest.MapQuestTests.test_blank_locations_reprompt) ... ok
+test_exact_conversion_factor (test_mapquest.MapQuestTests.test_exact_conversion_factor) ... ok
+test_geocoding_failures_do_not_request_routes (test_mapquest.MapQuestTests.test_geocoding_failures_do_not_request_routes) ... ok
+test_invalid_route_responses (test_mapquest.MapQuestTests.test_invalid_route_responses) ... ok
+test_invalid_selections_make_no_requests (test_mapquest.MapQuestTests.test_invalid_selections_make_no_requests) ... ok
+test_quit_at_each_prompt (test_mapquest.MapQuestTests.test_quit_at_each_prompt) ... ok
+test_recovery_and_unit_change_after_error (test_mapquest.MapQuestTests.test_recovery_and_unit_change_after_error) ... ok
+test_unit_selection_and_vehicle_profiles (test_mapquest.MapQuestTests.test_unit_selection_and_vehicle_profiles) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.093s
+
+OK
+
+
+LIVE PASS miles: HTTP [200, 200, 200]
+Inputs: ['car', 'm', 'Manila, Philippines', 'Quezon City, Philippines', 'q']
+
+=================================================
+MAPQUEST ROUTE PLANNER - GraphHopper
+=================================================
+Vehicle profiles: car, bike, foot
+Type q or quit at any prompt to exit.
+Location found: Manila, Metro Manila, Philippines
+Location found: Quezon City, Metro Manila, Philippines
+
+=================================================
+TRIP SUMMARY
+=================================================
+From: Manila, Metro Manila, Philippines
+To: Quezon City, Metro Manila, Philippines
+Vehicle: car
+Distance Traveled: 8.0 miles
+Trip Duration: 00:20:30
+-------------------------------------------------
+DIRECTIONS
+1. Continue onto Victoria Street (0.0 miles)
+2. Turn sharp right onto Padre Burgos Avenue (0.0 miles)
+3. Keep left onto Taft Avenue (0.3 miles)
+4. Turn sharp right onto Finance Road (0.2 miles)
+5. Turn right onto Padre Burgos Avenue (0.5 miles)
+6. Keep right onto Quezon Boulevard (2.4 miles)
+7. At roundabout, take exit 3 onto Quezon Avenue (2.8 miles)
+8. Keep left onto Quezon Avenue (0.9 miles)
+9. Keep right onto Quezon Avenue toward 170, 173, 174 (0.6 miles)
+10. Keep left (0.0 miles)
+11. Keep left (0.1 miles)
+12. At roundabout, take exit 3 (0.1 miles)
+13. Arrive at destination (0.0 miles)
+=================================================
+
+=================================================
+MAPQUEST ROUTE PLANNER - GraphHopper
+=================================================
+Vehicle profiles: car, bike, foot
+Type q or quit at any prompt to exit.
+Goodbye!
+
+
+LIVE PASS kilometers: HTTP [200, 200, 200]
+Inputs: ['car', 'k', 'Manila, Philippines', 'Quezon City, Philippines', 'q']
+
+=================================================
+MAPQUEST ROUTE PLANNER - GraphHopper
+=================================================
+Vehicle profiles: car, bike, foot
+Type q or quit at any prompt to exit.
+Location found: Manila, Metro Manila, Philippines
+Location found: Quezon City, Metro Manila, Philippines
+
+=================================================
+TRIP SUMMARY
+=================================================
+From: Manila, Metro Manila, Philippines
+To: Quezon City, Metro Manila, Philippines
+Vehicle: car
+Distance Traveled: 12.9 kilometers
+Trip Duration: 00:20:30
+-------------------------------------------------
+DIRECTIONS
+1. Continue onto Victoria Street (0.0 kilometers)
+2. Turn sharp right onto Padre Burgos Avenue (0.0 kilometers)
+3. Keep left onto Taft Avenue (0.5 kilometers)
+4. Turn sharp right onto Finance Road (0.3 kilometers)
+5. Turn right onto Padre Burgos Avenue (0.8 kilometers)
+6. Keep right onto Quezon Boulevard (3.9 kilometers)
+7. At roundabout, take exit 3 onto Quezon Avenue (4.5 kilometers)
+8. Keep left onto Quezon Avenue (1.5 kilometers)
+9. Keep right onto Quezon Avenue toward 170, 173, 174 (0.9 kilometers)
+10. Keep left (0.1 kilometers)
+11. Keep left (0.2 kilometers)
+12. At roundabout, take exit 3 (0.2 kilometers)
+13. Arrive at destination (0.0 kilometers)
+=================================================
+
+=================================================
+MAPQUEST ROUTE PLANNER - GraphHopper
+=================================================
+Vehicle profiles: car, bike, foot
+Type q or quit at any prompt to exit.
+Goodbye!
+
+
+LIVE PASS unknown location: HTTP [200]
+Inputs: ['car', 'm', 'zzzznonexistentlocation987654321zzzz', 'q']
+
+=================================================
+MAPQUEST ROUTE PLANNER - GraphHopper
+=================================================
+Vehicle profiles: car, bike, foot
+Type q or quit at any prompt to exit.
+Location not found: zzzznonexistentlocation987654321zzzz. Check the spelling or add a city/country.
+
+=================================================
+MAPQUEST ROUTE PLANNER - GraphHopper
+=================================================
+Vehicle profiles: car, bike, foot
+Type q or quit at any prompt to exit.
+Goodbye!
