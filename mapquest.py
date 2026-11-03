@@ -87,6 +87,15 @@ while True:
         print("Invalid vehicle profile. Please choose car, bike, or foot.")
         continue
 
+    unit_choice = input("Choose distance unit [m]iles or [k]ilometers (default miles): ").strip().lower()
+    if unit_choice in ("q", "quit"):
+        break
+    if unit_choice not in ("", "m", "miles", "k", "kilometers"):
+        print("Invalid distance unit. Please choose miles (m) or kilometers (k).")
+        continue
+    unit_name = "kilometers" if unit_choice in ("k", "kilometers") else "miles"
+    multiplier = 1.60934 if unit_name == "kilometers" else 1.0
+
     loc1 = read_input("Starting Location: ")
     if loc1 is None:
         break
@@ -136,7 +145,6 @@ while True:
         continue
 
     miles = distance / 1000 / 1.61
-    km = distance / 1000
     sec = int(duration / 1000 % 60)
     min = int(duration / 1000 / 60 % 60)
     hr = int(duration / 1000 / 60 / 60)
@@ -147,16 +155,16 @@ while True:
     print(f"From: {orig[2]}")
     print(f"To: {dest[2]}")
     print(f"Vehicle: {vehicle}")
-    print("Distance Traveled: {0:.1f} miles / {1:.1f} km".format(miles, km))
+    print("Distance Traveled: {0:.1f} {1}".format(miles * multiplier, unit_name))
     print("Trip Duration: {0:02d}:{1:02d}:{2:02d}".format(hr, min, sec))
     print("-" * 49)
     print("DIRECTIONS")
     for number, instruction in enumerate(instructions, start=1):
-        print("{0}. {1} ({2:.1f} km / {3:.1f} miles)".format(
+        print("{0}. {1} ({2:.1f} {3})".format(
             number,
             instruction["text"],
-            instruction["distance"] / 1000,
-            instruction["distance"] / 1000 / 1.61
+            (instruction["distance"] / 1000 / 1.61) * multiplier,
+            unit_name
         ))
     print("=" * 49)
 
