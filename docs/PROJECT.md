@@ -1,64 +1,49 @@
-# Project objectives, workflow, and progress
+# Project plan
 
-## Choice and objectives
+## Goal
 
-Quatro Kantos selected Option 1: enhance the Lab 4.9.2 application. It provides an existing Python/REST baseline on which the team can demonstrate practical user-facing improvements, scoped work, and collaborative version control.
+Improve the Lab 4.9.2 app with a unit choice, clear output, and helpful errors. Keep live routes, travel time, directions, and car/bike/foot options working.
 
-Objectives: selectable miles/kilometers with the specified 1.60934 multiplier; readable trip summaries and directions; friendly input/API error handling; preservation of live routing and vehicle profiles; GitHub branch/PR integration; documented verification and future improvements.
+We chose Option 1 because it builds on an existing Python app and lets us practice GitHub teamwork. The code uses GraphHopper; instructor approval of this lab version still needs confirmation.
 
-The supplied baseline uses GraphHopper despite the MapQuest lab/project name. The instructor's acceptance of that baseline is still to be confirmed.
+## Roles and branches
 
-## Roles, assignments, and skills
-
-Official roles remain those established in Activity 2.
-
-| Member | Role | Assigned contribution / relevant area | Prior experience |
+| Member | Official role | Branch | Task |
 | --- | --- | --- | --- |
-| Josh Ong | Scrum Leader | Coordination, task priorities, GitHub workflow, integration | Awaiting Josh's description |
-| Dylan Garcia | Recorder | Documentation, rubric mapping, progress/evidence records | Awaiting Dylan's description |
-| Miguel Yanto | Development Team | Python input and distance conversion | Awaiting Miguel's description |
-| Sean Suaco | Development Team | Python formatting, validation, API response handling | Awaiting Sean's description |
+| Josh Ong | Scrum Leader | `project-management` | Guide work and track progress |
+| Dylan Garcia | Recorder | `testing-documentation` | Write documents and record results |
+| Miguel Yanto | Development Team | `distance-units` | Add miles/kilometers choice |
+| Sean Suaco | Development Team | `formatting-errors` | Improve output and handle errors |
 
-Assignments describe work scope, not verified expertise. The team should add actual skillsets and any cross-training completed. No prior experience or training outcome is inferred.
+Members still need to provide their past skills and available time. These tasks do not prove prior experience.
 
-## Strategy and tools
+## How we worked
 
-Use small, separately owned tasks; implement the features independently; preserve baseline behavior; test each feature and their combination; record real evidence; integrate through PRs. Python, requests, Git/GitHub, VS Code, and unittest are the implementation and verification tools. Markdown files hold the shared project records.
+1. Use separate branches and small tasks.
+2. Keep each developer's changes within their task.
+3. Test each feature and both together.
+4. Commit, push, and open a pull request into `main`.
+5. Fix conflicts while keeping both features, then merge.
 
-Assigned branches: `distance-units` (Miguel), `formatting-errors` (Sean), `testing-documentation` (Dylan), and `project-management` (coordination work). `main` is the integrated version. Preserve current changes before switching branches; stage only intended files and never force-push or discard another member's work.
+Tools: Python, requests, unittest, Git/GitHub, VS Code, and Markdown.
 
-Actual integration used PR #1 for distance selection, PR #3 for formatting/error handling and conflict resolution, and PR #2 for documentation. Both developers changed mapquest.py; the conflict was resolved explicitly to retain both features. Automated and live checks were performed by the assistant. No independent human code-review approval is claimed.
+PR #1 added units, PR #3 added formatting/errors and combined the code, and PR #2 added documents. All are merged. The assistant ran the recorded tests. No separate human review approval is recorded.
 
-## Task plan and dependencies
+## Progress — 4 November 2026
 
-This is a prioritized completion/handoff plan, not a record of a previously agreed sprint schedule.
-
-| Priority | Owner | Task | Dependency / completion evidence |
+| Priority | Task | Owner | Status |
 | --- | --- | --- | --- |
-| P1 | Miguel | Implement unit selection and preserve baseline routing | Completed in 6610fff / PR #1 |
-| P1 | Sean | Implement formatting and friendly error handling | Completed initial commit 56db283; integrated in PR #3 |
-| P1 | Integration, coordinated by Josh | Resolve overlap; verify combined behavior | Integrated code 4c7c3b1; assistant tests and live checks recorded |
-| P1 | Miguel and Sean | Personally run/confirm test cases; preserve screenshots | Pending member reports; integrated code available |
-| P1 | Dylan | Update README, instructions mapping, test records, backlog, presentation script | Documentation PR #2 |
-| P1 | Josh | Confirm instructor accepts the supplied GraphHopper baseline; verify collaborator access | Pending team evidence |
-| P2 | All, coordinated by Josh | Review records, rehearse demonstration, capture presentation/submission evidence | Depends on member confirmations and instructor requirements |
-| P2 | Dylan | Record real skills, availability, workload, and completion dates | Team-supplied information required |
+| High | Unit choice | Miguel | Merged; feature commit `6610fff` |
+| High | Clear output and errors | Sean | Merged; first commit `56db283` |
+| High | Combine and test features | Team | Code `4c7c3b1` passed assistant checks |
+| High | README and project records | Dylan | Merged through PR #2 |
+| High | Personal tests and screenshots | Miguel, Sean | Awaiting reports |
+| High | Confirm lab version and GitHub access | Josh | Awaiting evidence |
+| Next | Add real skills, hours, and due dates | Team; Dylan records | Awaiting team details |
+| Next | Rehearse and give presentation | Team | Not recorded yet |
 
-Instructor deadline, allocated sprint count, budget, per-member availability, task estimates, and agreed check-in times have not been supplied. Josh should record those values and use them to assign dates and rebalance workload. Until then, no claim of finishing on schedule or within budget is made. Report blockers in the task record and prioritize dependencies before presentation rehearsal.
+The deadline, sprint count, budget, work estimates, and check-in times were not supplied. Josh should add them before claiming the project finished on time or within budget.
 
-## Progress snapshot
+## Save as evidence
 
-4 November 2026, Asia/Singapore:
-
-- Original baseline: 1d6a07a.
-- Miguel's feature: committed/pushed and merged through PR #1.
-- Sean's feature: restored from the saved draft, committed as `Improve formatting and error handling`, integrated with Miguel's work, and merged through PR #3.
-- Integrated code: main commit 4c7c3b1; eight repeatable test methods passed on that commit. Live integrated checks are recorded separately in TESTING.md.
-- Documentation: README, workflow, test record, instruction mapping, future backlog, and presentation script prepared through PR #2.
-- Pending human evidence: Miguel/Sean personal test confirmations, member skillsets and availability, collaborator-access evidence, independent review, presentation rehearsal/delivery, and instructor baseline confirmation.
-
-The earlier stash is retained as a backup of Sean's initial draft; it is no longer the only copy of his implementation.
-
-## Evidence checklist
-
-Preserve Activity 2 role assignments; actual member skill/availability notes; collaborator access; branch/commit diffs; test inputs/results; PRs and merges; integrated-version screenshots; and the final presentation/rehearsal evidence. Record failures as well as successes, and hide credentials.
+Keep role assignments, GitHub access, branch/commit history, PR merges, test results, screenshots, and presentation files. Add tester, date, and code version. Hide API keys.
