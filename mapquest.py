@@ -1,16 +1,22 @@
 import urllib.parse
+import requests
 
 # Standard MapQuest base URL
 url = "https://www.mapquestapi.com/directions/v2/route?"
 
 while True:
-    orig = input("Starting Location (or type 'quit' to exit): ")
+    orig = input("Starting Location (or type 'quit' to exit): ").strip()
     if orig.lower() == "quit":
         break
-    dest = input("Destination: ")
+    dest = input("Destination: ").strip()
     if dest.lower() == "quit":
         break
     
+    # Input validation for empty fields
+    if not orig or not dest:
+        print("\n[Error] Starting location and destination cannot be empty. Please try again.\n")
+        continue
+
     # Prompt user for distance unit preference
     unit_choice = input("Choose distance unit [m]iles or [k]ilometers (default miles): ").lower()
     if unit_choice == 'k':
@@ -39,7 +45,8 @@ while True:
     
     # Basic parsing with unit conversion and clear display
     if json_data["info"]["statuscode"] == 0:
-        print("\nAPI Status: 0 = Successful retrieval")
+        print("\n========================================")
+        print("API Status: 0 = Successful retrieval")
         
         # Calculate distance based on user choice
         base_distance = json_data["route"]["distance"]
@@ -50,7 +57,9 @@ while True:
         print("-" * 40)
         
         for maneuver in json_data["route"]["legs"][0]["maneuvers"]:
-            print(maneuver["narrative"])
-        print("-" * 40 + "\n")
+            print(f"- {maneuver['narrative']}")
+        print("========================================\n")
     else:
+        print("\n****************************************")
         print("Error processing request. Status code:", json_data["info"]["statuscode"])
+        print("****************************************\n")
