@@ -1,30 +1,22 @@
-# Rubric and evidence tracker
+# Project instruction / deliverable tracker
 
-**The official Project Activity 3 rubric has not been supplied.** The table below tracks team requirements from the project brief provided in this session. It does not reproduce the official rubric, assign points, or claim rubric compliance.
+Source: the instructor text supplied in this session, beginning “Your team has the choice to either make feature enhancements to an existing application, or to create a new application.” It includes explicit Rubric/Deliverable statements but no point values or numerical scoring. This tracker maps those requirements without inventing scores.
 
-When the official rubric is available, record its source/version, exact criteria and point values, then map each criterion to evidence and outstanding work. Do not infer scores from implementation status.
+Quatro Kantos chose Option 1. The public-IP application described under Option 2 is an alternative and is not an additional feature requirement for this project.
 
-| Team requirement | Owner | Available evidence | Outstanding evidence / work |
-| --- | --- | --- | --- |
-| Select Option 1 and identify project objectives | Dylan | README and project objectives | Compare wording with official activity instructions |
-| Retain official Activity 2 Agile roles | Dylan | Role list supplied by the team; documented in README | Preserve original Activity 2 role evidence |
-| Miles/kilometers enhancement | Miguel | Commit `6610fff`, PR #1, observed assistant verification | Miguel report/screenshots, review, merge |
-| Formatting/error-handling enhancement | Sean | Local draft and observed assistant verification | Sean report/screenshots, commit, push, PR, review, merge |
-| Separate branches and GitHub development workflow | All; Dylan records | Branch names and workflow documented | Commit/PR/merge evidence for all completed work |
-| Setup and usage instructions | Dylan | Updated README | Team review of instructions |
-| Accurate testing and progress records | Dylan | Testing template, assistant observations, pending-status tables | Developer reports with actual results and evidence |
-| Preserve original functionality and test the final integrated application | Miguel and Sean | Integration plan only | Combined-version tests and resulting commit/evidence |
-| Official rubric criteria and scoring | Dylan | Not supplied | Obtain rubric; add exact criteria, point values, and evidence mapping |
+| Instruction / deliverable | Evidence prepared | Remaining confirmation / evidence |
+| --- | --- | --- |
+| Identify selected application and reasons for choice | README and PROJECT.md explain Option 1 and the reasons | Team review; instructor acceptance of GraphHopper baseline |
+| Document team roles and additional knowledge/skillsets | Official roles and assigned focus areas in README/PROJECT.md | Each member's actual prior skills and cross-training details |
+| Describe team strategy, workload, tasks, priorities, status, and schedule | Workflow, tools, prioritized task/dependency plan, progress snapshot | Instructor deadline/sprint budget; actual availability, estimates, dates, workload/check-in records |
+| Record repository link and explain GitHub collaboration | README link; branch ownership and PR workflow; PRs #1, #2, #3 | Evidence that collaborators were added; independent human review if performed |
+| Code enhancements, merge team code, verify functionality | Main code 4c7c3b1; eight repeatable tests; recorded live observations | Member confirmations and screenshots; ongoing verification if the code changes |
+| Maintain a future-enhancement backlog for Activity 4 | BACKLOG.md with proposed priorities, dependencies, and acceptance ideas | Team/product-owner approval and estimates |
+| Create a presentation about selection and completed work | PRESENTATION.md speaking script and demo checklist | Team rehearsal, actual demonstration, and delivery/export/slides if required by the instructor |
+| Collaborate, monitor progress, and complete on schedule | Branch/PR/commit history and progress records | Genuine communication/workload evidence; schedule compliance cannot be claimed without agreed dates |
 
-## Evidence naming suggestion
+## Evidence filenames
 
-Use descriptive filenames such as `miguel-M01-6610fff-miles.png` or `sean-S02-draft-invalid-profile.png`. Include the tested version, tester, and date in the test record. Redact API keys; do not alter the results shown.
+Use descriptive names such as `miguel-main-4c7c3b1-miles.png`, `sean-main-4c7c3b1-invalid-profile.png`, and `dylan-pr2-documentation.png`. Identify tester, date/time, version, inputs, expected result, and actual result in the test record. Redact API keys without changing the results.
 
-Suggested evidence set:
-
-1. Assigned branch visible in VS Code or `git branch --show-current`.
-2. Relevant changes in the PR diff.
-3. Actual valid and invalid test inputs and results.
-4. Commit message/hash and branch push.
-5. PR head/base branches, review, and eventual merge.
-6. Both enhancements operating together on the recorded merged commit.
+Preserve the supplied instructor instructions as the source document. These Markdown records are not a numerical grading assessment and do not guarantee instructor approval.
