@@ -1,3 +1,4 @@
+import math
 import requests
 import urllib.parse
 
@@ -5,181 +6,166 @@ route_url = "https://graphhopper.com/api/1/route?"
 key = "4fd861c0-4509-4102-8d21-fdb75d9001e0"
 
 
-def geocoding(location, key):
-    while location == "":
-        location = input("Enter the location again: ")
+def read_input(prompt):
+    """Reject blank input and allow quitting at any prompt."""
+    while True:
+        value = input(prompt).strip()
+        if value.lower() in ("q", "quit"):
+            return None
+        if value:
+            return value
+        print("Please enter a value, or type q to quit.")
 
+
+def request_json(url, service):
+    """Return API data, or explain why the request could not be completed."""
+    try:
+        response = requests.get(url, timeout=15)
+    except requests.RequestException:
+        print(f"{service} error: Could not connect. Check your connection and try again.")
+        return None
+
+    if response.status_code != 200:
+        print(f"{service} error: Request failed (HTTP {response.status_code}). Please try again.")
+        return None
+
+    try:
+        data = response.json()
+    except ValueError:
+        print(f"{service} error: The service returned an invalid response. Please try again.")
+        return None
+    if not isinstance(data, dict):
+        print(f"{service} error: The service returned an invalid response. Please try again.")
+        return None
+    return data
+
+
+def geocoding(location, key):
     geocode_url = "https://graphhopper.com/api/1/geocode?"
     url = geocode_url + urllib.parse.urlencode({
         "q": location,
         "limit": "1",
         "key": key
     })
+    data = request_json(url, "Location search")
+    if data is None:
+        return None
 
-    replydata = requests.get(url)
-    json_data = replydata.json()
-    json_status = replydata.status_code
+    try:
+        hits = data["hits"]
+        if not isinstance(hits, list):
+            raise ValueError
+        if not hits:
+            print(f"Location not found: {location}. Check the spelling or add a city/country.")
+            return None
+        hit = hits[0]
+        lat = hit["point"]["lat"]
+        lng = hit["point"]["lng"]
+        if not math.isfinite(lat) or not math.isfinite(lng) or not (-90 <= lat <= 90 and -180 <= lng <= 180):
+            raise ValueError
+        new_loc = ", ".join(part for part in (hit["name"], hit.get("state"), hit.get("country")) if part)
+    except (KeyError, IndexError, TypeError, ValueError):
+        print("Location search error: The service returned incomplete or invalid location data.")
+        return None
 
-    if json_status == 200 and len(json_data["hits"]) != 0:
-        lat = json_data["hits"][0]["point"]["lat"]
-        lng = json_data["hits"][0]["point"]["lng"]
-        name = json_data["hits"][0]["name"]
-        value = json_data["hits"][0]["osm_value"]
-
-        if "country" in json_data["hits"][0]:
-            country = json_data["hits"][0]["country"]
-        else:
-            country = ""
-
-        if "state" in json_data["hits"][0]:
-            state = json_data["hits"][0]["state"]
-        else:
-            state = ""
-
-        if len(state) != 0 and len(country) != 0:
-            new_loc = name + ", " + state + ", " + country
-        elif len(country) != 0:
-            new_loc = name + ", " + country
-        else:
-            new_loc = name
-
-        print(
-            "Geocoding API URL for "
-            + new_loc
-            + " (Location Type: "
-            + value
-            + ")\n"
-            + url
-        )
-
-    else:
-        lat = "null"
-        lng = "null"
-        new_loc = location
-
-        if json_status != 200:
-            print(
-                "Geocode API status: "
-                + str(json_status)
-                + "\nError message: "
-                + json_data["message"]
-            )
-
-    return json_status, lat, lng, new_loc
+    print(f"Location found: {new_loc}")
+    return lat, lng, new_loc
 
 
 while True:
-    print("\n+++++++++++++++++++++++++++++++++++++++++++++")
-    print("Vehicle profiles available on Graphhopper:")
-    print("+++++++++++++++++++++++++++++++++++++++++++++")
-    print("car, bike, foot")
-    print("+++++++++++++++++++++++++++++++++++++++++++++")
+    print("\n" + "=" * 49)
+    print("MAPQUEST ROUTE PLANNER - GraphHopper")
+    print("=" * 49)
+    print("Vehicle profiles: car, bike, foot")
+    print("Type q or quit at any prompt to exit.")
 
-    profile = ["car", "bike", "foot"]
-
-    vehicle = input("Enter a vehicle profile from the list above: ")
-
-    if vehicle == "quit" or vehicle == "q":
+    vehicle = read_input("Vehicle profile: ")
+    if vehicle is None:
         break
-    elif vehicle in profile:
-        vehicle = vehicle
-    else:
-        vehicle = "car"
-        print("No valid vehicle profile was entered. Using the car profile.")
+    vehicle = vehicle.lower()
+    if vehicle not in ("car", "bike", "foot"):
+        print("Invalid vehicle profile. Please choose car, bike, or foot.")
+        continue
 
     unit_choice = input("Choose distance unit [m]iles or [k]ilometers (default miles): ").strip().lower()
+    if unit_choice in ("q", "quit"):
+        break
+    if unit_choice not in ("", "m", "miles", "k", "kilometers"):
+        print("Invalid distance unit. Please choose miles (m) or kilometers (k).")
+        continue
     unit_name = "kilometers" if unit_choice in ("k", "kilometers") else "miles"
     multiplier = 1.60934 if unit_name == "kilometers" else 1.0
 
-    loc1 = input("Starting Location: ")
-
-    if loc1 == "quit" or loc1 == "q":
+    loc1 = read_input("Starting Location: ")
+    if loc1 is None:
         break
-
     orig = geocoding(loc1, key)
+    if orig is None:
+        continue
 
-    loc2 = input("Destination: ")
-
-    if loc2 == "quit" or loc2 == "q":
+    loc2 = read_input("Destination: ")
+    if loc2 is None:
         break
-
     dest = geocoding(loc2, key)
+    if dest is None:
+        continue
 
-    print("=================================================")
+    paths_url = route_url + urllib.parse.urlencode([
+        ("key", key),
+        ("vehicle", vehicle),
+        ("point", f"{orig[0]},{orig[1]}"),
+        ("point", f"{dest[0]},{dest[1]}")
+    ])
+    paths_data = request_json(paths_url, "Routing")
+    if paths_data is None:
+        continue
 
-    if orig[0] == 200 and dest[0] == 200:
-        op = "&point=" + str(orig[1]) + "%2C" + str(orig[2])
-        dp = "&point=" + str(dest[1]) + "%2C" + str(dest[2])
+    try:
+        paths = paths_data["paths"]
+        if not isinstance(paths, list):
+            raise ValueError
+        if not paths:
+            print("No route found. Try different locations or another vehicle profile.")
+            continue
+        route = paths[0]
+        distance = route["distance"]
+        duration = route["time"]
+        instructions = route["instructions"]
+        if not math.isfinite(distance) or not math.isfinite(duration) or distance < 0 or duration < 0:
+            raise ValueError
+        if not isinstance(instructions, list) or not instructions:
+            raise ValueError
+        for instruction in instructions:
+            if not isinstance(instruction["text"], str) or not instruction["text"].strip():
+                raise ValueError
+            if not math.isfinite(instruction["distance"]) or instruction["distance"] < 0:
+                raise ValueError
+    except (KeyError, IndexError, TypeError, ValueError):
+        print("Routing error: The service returned incomplete or invalid route data. Please try again.")
+        continue
 
-        paths_url = (
-            route_url
-            + urllib.parse.urlencode({
-                "key": key,
-                "vehicle": vehicle
-            })
-            + op
-            + dp
-        )
+    miles = distance / 1000 / 1.61
+    sec = int(duration / 1000 % 60)
+    min = int(duration / 1000 / 60 % 60)
+    hr = int(duration / 1000 / 60 / 60)
 
-        paths_reply = requests.get(paths_url)
-        paths_status = paths_reply.status_code
-        paths_data = paths_reply.json()
+    print("\n" + "=" * 49)
+    print("TRIP SUMMARY")
+    print("=" * 49)
+    print(f"From: {orig[2]}")
+    print(f"To: {dest[2]}")
+    print(f"Vehicle: {vehicle}")
+    print("Distance Traveled: {0:.1f} {1}".format(miles * multiplier, unit_name))
+    print("Trip Duration: {0:02d}:{1:02d}:{2:02d}".format(hr, min, sec))
+    print("-" * 49)
+    print("DIRECTIONS")
+    for number, instruction in enumerate(instructions, start=1):
+        print("{0}. {1} ({2:.1f} {3})".format(
+            number,
+            instruction["text"],
+            (instruction["distance"] / 1000 / 1.61) * multiplier,
+            unit_name
+        ))
+    print("=" * 49)
 
-        print(
-            "Routing API Status: "
-            + str(paths_status)
-            + "\nRouting API URL:\n"
-            + paths_url
-        )
-
-        print("=================================================")
-        print(
-            "Directions from "
-            + orig[3]
-            + " to "
-            + dest[3]
-            + " by "
-            + vehicle
-        )
-        print("=================================================")
-
-        if paths_status == 200:
-            miles = paths_data["paths"][0]["distance"] / 1000 / 1.61
-
-            sec = int(paths_data["paths"][0]["time"] / 1000 % 60)
-            min = int(paths_data["paths"][0]["time"] / 1000 / 60 % 60)
-            hr = int(paths_data["paths"][0]["time"] / 1000 / 60 / 60)
-
-            print(
-                "Distance Traveled: {0:.1f} {1}".format(
-                    miles * multiplier, unit_name
-                )
-            )
-
-            print(
-                "Trip Duration: {0:02d}:{1:02d}:{2:02d}".format(
-                    hr, min, sec
-                )
-            )
-
-            print("=============================================")
-
-            for each in range(
-                len(paths_data["paths"][0]["instructions"])
-            ):
-                path = paths_data["paths"][0]["instructions"][each]["text"]
-                distance = paths_data["paths"][0]["instructions"][each]["distance"]
-
-                print(
-                    "{0} ( {1:.1f} {2} )".format(
-                        path,
-                        (distance / 1000 / 1.61) * multiplier,
-                        unit_name
-                    )
-                )
-
-            print("=============================================")
-
-        else:
-            print("Error message: " + paths_data["message"])
-            print("*************************************************")
+print("Goodbye!")
