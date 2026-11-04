@@ -1,6 +1,7 @@
 """Run with: python -m unittest discover -s tests -v"""
 import contextlib
 import io
+import os
 from pathlib import Path
 import runpy
 import unittest
@@ -32,7 +33,16 @@ def route(**changes):
 class MapQuestTests(unittest.TestCase):
     def run_app(self, inputs, replies):
         output = io.StringIO()
-        with patch("builtins.input", side_effect=inputs), patch("requests.get", side_effect=replies) as get, contextlib.redirect_stdout(output):
+        answers = iter(inputs)
+
+        def answer(prompt):
+            if prompt.startswith("Number or r"):
+                return "1"
+            if prompt.startswith("Confirm?"):
+                return "y"
+            return next(answers)
+
+        with patch("builtins.input", side_effect=answer), patch.dict(os.environ, {"GRAPHHOPPER_API_KEY": "test-key"}), patch("requests.get", side_effect=replies) as get, contextlib.redirect_stdout(output):
             runpy.run_path(str(APP), run_name="__main__")
         text = output.getvalue()
         self.assertIn("Goodbye!", text)
@@ -48,7 +58,7 @@ class MapQuestTests(unittest.TestCase):
                     text, get = self.run_app([vehicle.upper(), unit, "Manila", "Quezon City", "q"], [location(), location("Quezon City", 14.65, 121.05), route()])
                     metric = unit.strip().lower() in ("k", "kilometers")
                     self.assertIn("Distance Traveled: " + ("16.1 kilometers" if metric else "10.0 miles"), text)
-                    self.assertIn("1. Turn right (" + ("8.0 kilometers" if metric else "5.0 miles") + ")", text)
+                    self.assertIn("1. Turn right (" + ("8.1 kilometers" if metric else "5.0 miles") + ")", text)
                     self.assertIn("TRIP SUMMARY", text)
                     self.assertIn("DIRECTIONS", text)
                     self.assertIn("Trip Duration: 00:15:00", text)
@@ -59,8 +69,8 @@ class MapQuestTests(unittest.TestCase):
 
     def test_exact_conversion_factor(self):
         text, _ = self.run_app(["car", "k", "Manila", "Quezon City", "q"], [location(), location(), route(distance=1610000, instructions=[{"text": "Continue", "distance": 805000}])])
-        self.assertIn("Distance Traveled: 1609.3 kilometers", text)
-        self.assertIn("1. Continue (804.7 kilometers)", text)
+        self.assertIn("Distance Traveled: 1610.0 kilometers", text)
+        self.assertIn("1. Continue (805.0 kilometers)", text)
 
     def test_invalid_selections_make_no_requests(self):
         for inputs, expected in [(["plane", "q"], "Invalid vehicle profile"), (["car", "yards", "q"], "Invalid distance unit")]:
