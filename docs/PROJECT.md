@@ -51,7 +51,7 @@ PR #1 added units, PR #3 added formatting/errors and combined the code, and PR #
 | High | API key moved to `.env` (git-ignored); `.env.example` template | Sean | Done; old exposed key must be rotated |
 | High | OpenStreetMap fallback when GraphHopper is unreachable | Sean | Done; used for all live checks on 5 November |
 | High | Live GraphHopper check | Sean | Blocked: `graphhopper.com` unreachable from test network |
-| Next | Open PR into `main` and get a review | Sean, Josh | Not started |
+| High | Merge into `main` | Sean | Merged directly on 6 November, without a PR or review |
 
 The deadline, sprint count, budget, work estimates, and check-in times were not supplied. Josh should add them before claiming the project finished on time or within budget.
 
