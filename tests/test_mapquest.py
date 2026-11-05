@@ -42,13 +42,13 @@ class MapQuestTests(unittest.TestCase):
                 return "y"
             return next(answers)
 
-        with patch("builtins.input", side_effect=answer), patch.dict(os.environ, {"GRAPHHOPPER_API_KEY": "test-key"}), patch("requests.get", side_effect=replies) as get, contextlib.redirect_stdout(output):
+        with patch("builtins.input", side_effect=answer), patch.dict(os.environ, {"GRAPHHOPPER_API_KEY": "test-key", "ROUTING_PROVIDER": "graphhopper"}), patch("requests.get", side_effect=replies) as get, contextlib.redirect_stdout(output):
             runpy.run_path(str(APP), run_name="__main__")
         text = output.getvalue()
         self.assertIn("Goodbye!", text)
         self.assertNotIn("key=", text)
         for call in get.call_args_list:
-            self.assertEqual(call.kwargs["timeout"], 15)
+            self.assertEqual(call.kwargs["timeout"], (4, 15))
         return text, get
 
     def test_unit_selection_and_vehicle_profiles(self):

@@ -2,6 +2,26 @@
 
 **Tester: Codex assistant.** These checks do not count as Miguel's or Sean's personal reports.
 
+## Location confirmation, GUI, and OpenStreetMap fallback
+
+**Tester: Claude Code assistant, run on Sean's machine.** Date: 5 November 2026. Code: uncommitted working tree based on `59afb13`, committed on branch `gui-location-confirm`. Setup: Windows 11, Python 3.11.9.
+
+| Check | Actual result |
+| --- | --- |
+| Automated tests (`unittest discover`) | 22 tests, all passed (sample replies, no live requests) |
+| Live terminal trip: Manila → Quezon City, car, kilometers | 12.9 kilometers; 00:18:00; 20 numbered directions |
+| Wrong vehicle (`plane`), wrong unit (`x`), blank location | Clear message each time; asked again |
+| Made-up location | "Location not found" message; asked again |
+| Match number out of range (`9`), then select and confirm | Asked again; selection and `y` confirmation worked |
+| `q` at the vehicle prompt | Printed "Goodbye!" and exited |
+| GUI launch (`mapquest_gui.py`) | Window opened; closed with exit code 0 and no errors logged |
+| GraphHopper reachability | **Blocked:** `graphhopper.com` timed out from this network, so the app used the OpenStreetMap fallback (Nominatim + OSRM) for every live result above |
+
+Still needed:
+
+- Repeat the live trip with `ROUTING_PROVIDER=graphhopper` on a network that can reach GraphHopper, to confirm the API key works.
+- Test the GUI by hand: search, pick a match from the list and from the map, right-click to set a point, route drawing, clicking a direction step, map styles, and copying directions. The GUI has no automated tests.
+
 ## Combined app
 
 Date: 4 November 2026, Asia/Singapore. Code: `4c7c3b1` on `main`. Setup: Windows, Python 3.14.10.

@@ -42,6 +42,17 @@ PR #1 added units, PR #3 added formatting/errors and combined the code, and PR #
 | Next | Add real skills, hours, and due dates | Team; Dylan records | Awaiting team details |
 | Next | Rehearse and give presentation | Team | Not recorded yet |
 
+## Progress — 5 November 2026
+
+| Priority | Task | Owner | Status |
+| --- | --- | --- | --- |
+| High | Location matches with selection and confirmation | Sean | Done; tests pass; branch `gui-location-confirm` |
+| High | Desktop GUI with interactive map (`mapquest_gui.py`) | Sean | Launches; hands-on GUI test still needed |
+| High | API key moved to `.env` (git-ignored); `.env.example` template | Sean | Done; old exposed key must be rotated |
+| High | OpenStreetMap fallback when GraphHopper is unreachable | Sean | Done; used for all live checks on 5 November |
+| High | Live GraphHopper check | Sean | Blocked: `graphhopper.com` unreachable from test network |
+| Next | Open PR into `main` and get a review | Sean, Josh | Not started |
+
 The deadline, sprint count, budget, work estimates, and check-in times were not supplied. Josh should add them before claiming the project finished on time or within budget.
 
 ## Save as evidence
